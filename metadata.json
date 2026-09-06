@@ -1,0 +1,12 @@
+{
+  "name": "Mulaqat ",
+  "description": "Mulaqat - Premium vedeo calling \u0026pyar Bhari baatein ",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,204 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return (isSignedIn() && 
+        (request.auth.token.email == 'noircouplehub@gmail.com' ||
+         request.auth.token.email == 'lpari3423@gmail.com' ||
+         request.auth.token.email == 's30669983@gmail.com' ||
+         request.auth.token.email == 'gumanamains37@gmail.com' ||
+         request.auth.token.email == 'gumanamainsana@gmail.com' ||
+         request.auth.token.email == 'misskavya869@gmail.com' ||
+         request.auth.token.email == 'rambomr837@gmail.com')) ||
+        (isSignedIn() && request.auth.token.email_verified == true && 
+         (request.auth.token.email == 'noircouplehub@gmail.com' ||
+          request.auth.token.email == 'lpari3423@gmail.com' ||
+          request.auth.token.email == 's30669983@gmail.com' ||
+          request.auth.token.email == 'gumanamains37@gmail.com' ||
+          request.auth.token.email == 'gumanamainsana@gmail.com' ||
+          request.auth.token.email == 'misskavya869@gmail.com' ||
+          request.auth.token.email == 'rambomr837@gmail.com'));
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128;
+    }
+
+    // 1. Test collection rule for verifying Firestore connectivity
+    match /test/{testId} {
+      allow read, write: if true;
+    }
+
+    // 2. Users Collection & Subcollections
+    match /users/{userId} {
+      allow read, write: if true;
+
+      match /{allChildren=**} {
+        allow read, write: if true;
+      }
+    }
+
+    // 3. Voice Chat Rooms & Subcollections
+    match /rooms/{roomId} {
+      allow read, write: if true;
+
+      match /{allChildren=**} {
+        allow read, write: if true;
+      }
+    }
+
+    // 4. Live Video Streams & Subcollections
+    match /live_streams/{streamId} {
+      allow read, write: if true;
+
+      match /{allChildren=**} {
+        allow read, write: if true;
+      }
+    }
+
+    // 5. Gifts & Gift Transaction Logs
+    match /gifts/{giftId} {
+      allow read, write: if true;
+    }
+
+    match /gift_logs/{logId} {
+      allow read, write: if true;
+    }
+
+    // 6. User Agencies & Agency Management
+    match /agencies/{agencyId} {
+      allow read, write: if true;
+
+      match /{allChildren=**} {
+        allow read, write: if true;
+      }
+    }
+
+    // 7. Private Direct Chats & Messages
+    match /private_chats/{chatId} {
+      allow read, write: if true;
+
+      match /{allChildren=**} {
+        allow read, write: if true;
+      }
+    }
+
+    // 8. User Follows & Followers
+    match /follows/{followId} {
+      allow read, write: if true;
+    }
+
+    // 9. Community Live Moments Feed
+    match /live_moments/{momentId} {
+      allow read, write: if true;
+
+      match /{allChildren=**} {
+        allow read, write: if true;
+      }
+    }
+
+    // 10. Moments Posts & Comments
+    match /posts/{postId} {
+      allow read, write: if true;
+
+      match /{allChildren=**} {
+        allow read, write: if true;
+      }
+    }
+
+    // 11. Stories / Status Updates
+    match /stories/{storyId} {
+      allow read, write: if true;
+
+      match /{allChildren=**} {
+        allow read, write: if true;
+      }
+    }
+
+    // 12. Voice Recordings
+    match /recordings/{recordingId} {
+      allow read, write: if true;
+    }
+
+    // 13. Voice Room Scheduled Events
+    match /room_events/{eventId} {
+      allow read, write: if true;
+    }
+
+    // 14. Real-time Activities Stream
+    match /activities/{activityId} {
+      allow read, write: if true;
+    }
+
+    // 15. User Notifications & Alerts
+    match /notifications/{notificationId} {
+      allow read, write: if true;
+    }
+
+    // 16. App Store Purchases & Inventory Logs
+    match /store_logs/{logId} {
+      allow read, write: if true;
+    }
+
+    // 17. User Referral Tracking
+    match /referrals/{referralId} {
+      allow read, write: if true;
+    }
+
+    // 18. Customer Support Help Desk
+    match /support_chats/{userId} {
+      allow read, write: if true;
+
+      match /{allChildren=**} {
+        allow read, write: if true;
+      }
+    }
+
+    // 19. System Bans & Device Restrictions
+    match /system_bans/{banId} {
+      allow read, write: if true;
+    }
+
+    // 20. 1-on-1 Video Calls Signaling, Ringing & WebRTC
+    match /video_calls/{callId} {
+      allow read, write: if true;
+
+      match /{allChildren=**} {
+        allow read, write: if true;
+      }
+    }
+
+    // 21. Host Applications
+    match /host_applications/{appId} {
+      allow read, write: if true;
+
+      match /{allChildren=**} {
+        allow read, write: if true;
+      }
+    }
+
+    // 22. Recharge Orders & Offline Admin Transfers
+    match /recharge_orders/{orderId} {
+      allow read, write: if true;
+
+      match /{allChildren=**} {
+        allow read, write: if true;
+      }
+    }
+
+    // 23. System Fallback Rule (guarantees no permission errors across any collections)
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
